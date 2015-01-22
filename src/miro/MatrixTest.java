@@ -40,8 +40,6 @@ public class MatrixTest extends TestCase {
     }
     
     public void testConcateRows() {
-        
- 
         List<List<String>> stringData = new ArrayList<List<String>>();
         stringData.add(Arrays.asList("1","0","0"));
         stringData.add(Arrays.asList("1","1","0"));
