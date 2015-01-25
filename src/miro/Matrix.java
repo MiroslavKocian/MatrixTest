@@ -2,9 +2,15 @@ package miro;
 
 import java.util.ArrayList;
 import java.util.Arrays;
+import java.util.Collections;
 import java.util.Comparator;
 import java.util.HashMap;
+import java.util.LinkedHashMap;
 import java.util.List;
+import java.util.Map;
+import java.util.Map.Entry;
+import java.util.Set;
+import java.util.stream.Collectors;
 
 public class Matrix {
     
@@ -56,7 +62,7 @@ public class Matrix {
 	}
 	
 
-	public static List<Integer> getMaxSlice(List<String> intData) {
+	public static ArrayList<Integer> getMaxSlice(List<String> intData) {
         HashMap<Integer, Integer> maxSlicesByRow = new HashMap<Integer, Integer>();
        
         int maxInLine = 0;   
@@ -74,23 +80,51 @@ public class Matrix {
               maxSlicesByRow.put(intData.indexOf(row), maxInLine);
               maxInLine = 0;      
         }
+      
+        //ArrayList<Integer> onlyMaxSlicesList = new ArrayList<Integer>();
+        //ArrayList<Integer> maxSlicesByRow2 = entriesSortedByValues(maxSlicesByRow);
+        /*Map<Integer, Integer> sortedMap = 
+                maxSlicesByRow.entrySet().stream()
+               .sorted(Entry.comparingByValue())
+               .collect(Collectors.toMap(Entry::getKey, Entry::getValue,
+                                         (e1, e2) -> e1, LinkedHashMap::new));*/
         
-        ArrayList<Integer> onlyMaxSlicesList = new ArrayList<Integer>();
-        
-        for (int j = 0; j < intData.size(); j++) {
-            
-            if ((totalMax == (maxSlicesByRow.get(j)))) {
-                onlyMaxSlicesList.add(j);
+        /*for (int j = 0; j < intData.size(); j++) {   
+         * add to new array;        
+            if ((totalMax != (sortedMap.get(j)))) {
+                break;
             }   
         }
-		return onlyMaxSlicesList;
+		return new ArrayList<Integer>(sortedMap.keySet());*/
+        for (int j = 0; j < intData.size(); j++) {           
+            if ((totalMax != (maxSlicesByRow.get(j)))) {
+                maxSlicesByRow.remove(j, maxSlicesByRow.get(j));
+            }   
+        }
+        return new ArrayList<Integer>(maxSlicesByRow.keySet());
 	}
+	/*
+	static <K,V extends Comparable<? super V>> 
+                    List<Entry<K, V>> entriesSortedByValues(Map<K,V> map) {
+        List<Entry<K,V>> sortedEntries = new ArrayList<Entry<K,V>>(map.entrySet());
+        
+        Collections.sort(sortedEntries, 
+            new Comparator<Entry<K,V>>() {
+                @Override
+                public int compare(Entry<K,V> e1, Entry<K,V> e2) {
+                    return e2.getValue().compareTo(e1.getValue());
+                }
+            }
+        );
+        
+    return sortedEntries;
+        }    
 	
 	private static final class DescendingOrder implements Comparator<Integer> {
         @Override
         public int compare(Integer o1, Integer o2) {
             return o2.compareTo(o1);
         }
-    }
+    }*/
 
 }

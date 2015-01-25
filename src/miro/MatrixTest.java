@@ -39,7 +39,7 @@ public class MatrixTest extends TestCase {
         assertEquals(Arrays.asList("1,0,0","1,1,0"), rows);
     }
     
-    public void testConcateRows() {
+    public void testConcatenateRows() {
         List<List<String>> stringData = new ArrayList<List<String>>();
         stringData.add(Arrays.asList("1","0","0"));
         stringData.add(Arrays.asList("1","1","0"));
