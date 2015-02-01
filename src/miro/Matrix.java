@@ -15,6 +15,8 @@ import java.util.stream.Collectors;
 public class Matrix {
     
     private List<String> data;
+    private Map<Integer, Integer> maxSlicesByRow;
+    private Integer totalMaxSliceSize;
 
 	public Matrix(List<String> data) {
 		this.data = data;
@@ -62,69 +64,56 @@ public class Matrix {
 	}
 	
 
-	public static ArrayList<Integer> getMaxSlice(List<String> intData) {
-        HashMap<Integer, Integer> maxSlicesByRow = new HashMap<Integer, Integer>();
-       
-        int maxInLine = 0;   
-        int totalMax = 0;
-        for (String row : intData) {                     
-              String[] slices = row.split("0+");
-              for(int x = 0; x < slices.length; x++) {
-                  if (maxInLine < slices[x].length()) {
-                      maxInLine = slices[x].length();
-                  }
-                  if (totalMax < slices[x].length()) {
-                      totalMax = slices[x].length();
-                  }
-              }
-              maxSlicesByRow.put(intData.indexOf(row), maxInLine);
-              maxInLine = 0;      
-        }
-      
-        //ArrayList<Integer> onlyMaxSlicesList = new ArrayList<Integer>();
-        //ArrayList<Integer> maxSlicesByRow2 = entriesSortedByValues(maxSlicesByRow);
-        /*Map<Integer, Integer> sortedMap = 
-                maxSlicesByRow.entrySet().stream()
-               .sorted(Entry.comparingByValue())
-               .collect(Collectors.toMap(Entry::getKey, Entry::getValue,
-                                         (e1, e2) -> e1, LinkedHashMap::new));*/
-        
-        /*for (int j = 0; j < intData.size(); j++) {   
-         * add to new array;        
-            if ((totalMax != (sortedMap.get(j)))) {
-                break;
+	public List<Integer> getMaxSlice() {
+        ArrayList<Integer> rowsWithMaxSlice = new ArrayList<Integer>();
+        for (Entry<Integer, Integer> rowEntry : getMaxSlicesByRow().entrySet()) {           
+            if (rowEntry.getValue() == getTotalMaxSliceSize()) {
+                rowsWithMaxSlice.add(rowEntry.getKey());
             }   
         }
-		return new ArrayList<Integer>(sortedMap.keySet());*/
-        for (int j = 0; j < intData.size(); j++) {           
-            if ((totalMax != (maxSlicesByRow.get(j)))) {
-                maxSlicesByRow.remove(j, maxSlicesByRow.get(j));
-            }   
-        }
-        return new ArrayList<Integer>(maxSlicesByRow.keySet());
+        return rowsWithMaxSlice;
+    }
+
+	private int getTotalMaxSliceSize() {
+	    if (totalMaxSliceSize == null) totalMaxSliceSize = computeTotalMaxSliceSize();
+        return totalMaxSliceSize;
 	}
-	/*
-	static <K,V extends Comparable<? super V>> 
-                    List<Entry<K, V>> entriesSortedByValues(Map<K,V> map) {
-        List<Entry<K,V>> sortedEntries = new ArrayList<Entry<K,V>>(map.entrySet());
-        
-        Collections.sort(sortedEntries, 
-            new Comparator<Entry<K,V>>() {
-                @Override
-                public int compare(Entry<K,V> e1, Entry<K,V> e2) {
-                    return e2.getValue().compareTo(e1.getValue());
-                }
-            }
-        );
-        
-    return sortedEntries;
-        }    
 	
-	private static final class DescendingOrder implements Comparator<Integer> {
-        @Override
-        public int compare(Integer o1, Integer o2) {
-            return o2.compareTo(o1);
+    private int computeTotalMaxSliceSize() {
+        ArrayList<Integer> maxSlices = new ArrayList<Integer>(getMaxSlicesByRow().values());
+        maxSlices.sort(new DescendingOrder());
+        
+        int totalMax = maxSlices.get(0);
+        return totalMax;
+    }
+	
+	private Map<Integer, Integer> getMaxSlicesByRow() {
+	    if (maxSlicesByRow == null) maxSlicesByRow = computeMaxSlicesByRow();
+	    return maxSlicesByRow;
+	}
+
+    private Map<Integer,Integer> computeMaxSlicesByRow() {
+        HashMap<Integer, Integer> maxSlicesByRow = new HashMap<Integer, Integer>();
+        for (String row : data) {                     
+              List<String> slices = Arrays.asList(row.split("0+"));
+              slices.sort(new ByLength());
+              maxSlicesByRow.put(data.indexOf(row), slices.get(0).length());      
         }
-    }*/
+        return maxSlicesByRow;
+    }
+	
+	private static final class ByLength implements Comparator<String> {
+        @Override
+        public int compare(String o1, String o2) {
+            return o2.length() - o1.length();
+        }
+    }
+
+    private static final class DescendingOrder implements Comparator<Integer> {
+        @Override
+        public int compare(Integer arg0, Integer arg1) {
+            return arg1.compareTo(arg0);
+        }
+    }
 
 }
