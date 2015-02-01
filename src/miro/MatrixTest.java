@@ -50,7 +50,8 @@ public class MatrixTest extends TestCase {
     public void testCanGetRowWithMaximumSlice() {
         List<String> intData = (Arrays.asList("1100011","1100110","1011000","0101010","0001100"));
         List<Integer> consRowExpected = new ArrayList<Integer>(Arrays.asList(0,1,2,4));
-        assertEquals(consRowExpected, Matrix.getMaxSlice(intData));
+        //assertEquals(consRowExpected, Matrix.getMaxSlice(intData));
+        assertEquals(consRowExpected, new Matrix(intData).getMaxSlice());
         //assertEquals(2, Matrix.fromString("0,1,1\n1,1,1\n0,0,1").getMaxSlice());
     }
 }
