@@ -10,7 +10,6 @@ import java.util.Map.Entry;
 
 public class Matrix {
     
-    
     private List<String> data;
     private Map<Integer, Integer> maxSlicesByRow;
     private Integer totalMaxSliceSize;
