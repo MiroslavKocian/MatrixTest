@@ -35,7 +35,6 @@ public class Matrix {
 	public static Matrix fromString(String matrixSpecification) {
         matrixSpecification = matrixSpecification.replace(",", "");
         List<String> matrixRows = Arrays.asList(matrixSpecification.split("\n"));
-
         return new Matrix(matrixRows);
     }
 

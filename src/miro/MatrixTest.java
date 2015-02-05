@@ -18,7 +18,6 @@ public class MatrixTest extends TestCase {
 
     public void testCanConstructAMatrix() {
         Matrix matrix = new Matrix(data);
-        
         assertEquals(data, matrix.getData());       
     }
     
