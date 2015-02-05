@@ -14,6 +14,7 @@ public class Matrix {
     private Map<Integer, Integer> maxSlicesByRow;
     private Integer totalMaxSliceSize;
 
+    
 	public Matrix(List<String> data) {
 		this.data = data;
 	}
